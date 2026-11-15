@@ -51,6 +51,16 @@ public sealed class PanelAdminTests : IAsyncLifetime
     // ---------------------------------------------------------------- TOTP
 
     [Fact]
+    public async Task PendingScheduleCanBeDisposedRepeatedlyWithoutChangingTheExitToACrash()
+    {
+        var operations = _host.Service<Ro3Emu.Server.Http.PanelOperations>();
+        Assert.True((await operations.ScheduleAsync(Admin, new PanelSchedule("restart", 60, "Disposal test."))).Done);
+        operations.Dispose();
+        operations.Dispose();
+        // Host disposal also visits both DI registrations; neither may cancel an already disposed source.
+    }
+
+    [Fact]
     public void TotpMatchesTheRfc6238TestVectors()
     {
         // RFC 6238 appendix B, SHA-1 key "12345678901234567890": the last 6 of its 8-digit codes.

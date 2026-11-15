@@ -1,0 +1,13 @@
+.config-list { display: grid; gap: 1rem; }
+.config-setting { padding: 1.25rem; border: 1px solid var(--line, #d3d5da); border-radius: .75rem; }
+.config-setting[hidden] { display: none; }
+.config-setting h3 { margin: 0; flex: 1; }
+.config-setting .input { width: 100%; max-width: 100%; }
+.config-setting textarea { resize: vertical; }
+.config-current { overflow-wrap: anywhere; }
+.config-toolbar { display: grid; grid-template-columns: 2fr 1fr; gap: .75rem; margin-bottom: 1rem; }
+.config-rate-row { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)) auto; gap: .5rem; align-items: end; margin-bottom: .75rem; }
+@media (max-width: 600px) {
+  .config-toolbar { grid-template-columns: 1fr; }
+  .config-rate-row { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}

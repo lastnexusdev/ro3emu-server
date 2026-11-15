@@ -19,8 +19,12 @@ namespace Ro3Emu.Server.Http;
 public sealed partial class PanelOperations(IOptions<ServerOptions> options, AccountStore accounts, RoleStore roles, StaffRoles staff,
     MaintenanceMode maintenance, FeedbackService feedback, DatabaseBackup backups, GameData data, WorldData world, GameLoop loop,
     SessionRegistry sessions, ReconnectService reconnect, GmCommands gm, CharacterService characters, Game.Ownership.OwnerRegistry owners,
-    IHostApplicationLifetime lifetime, TimeProvider clock, ILogger<PanelOperations> log) : IPanelOperations, IDisposable
+    IHostApplicationLifetime lifetime, TimeProvider clock, ILogger<PanelOperations> log, ServerConfiguration configuration) : IPanelOperations, IDisposable
 {
+    public Task<PanelServerConfiguration> ServerConfigurationAsync() => configuration.ReadAsync();
+
+    public Task<PanelConfigResult> SaveServerConfigurationAsync(string admin, PanelConfigUpdate update) => configuration.SaveAsync(admin, update);
+
     /// <summary>Recovery codes per account: ten of ten base32 characters (50 bits each), shown once.</summary>
     private const int RecoveryCount = 10, RecoveryLength = 10;
 

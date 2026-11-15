@@ -344,6 +344,7 @@ public sealed partial class CharacterService
         if (expense.Count > 0 || plan.Grants.Any(g => g.Entry is not (BaseExpItem or JobExpItem))) await SyncItemsAsync(session);
         if (baseExp > 0 || jobExp > 0)
         {
+            if (staged.Level > oldLevel && !session.Dead) (session.CurrentHp, session.CurrentSp) = (null, null);
             await SyncAsync(session, RoleBaseInfoSync, BuildBaseInfo(session));
             if (staged.Level != oldLevel || staged.JobLevel != oldJob)
             {

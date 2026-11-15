@@ -94,7 +94,7 @@ public sealed partial class CharacterService
     /// </summary>
     public long WithPursueBonus(int level, long baseExp)
     {
-        if (baseExp <= 0) return baseExp;
+        if (baseExp <= 0 || !Experience.CatchUpEnabled) return baseExp;
         long percent = PursueExpPercent(level, ServerLevel());
         return percent <= 0 ? baseExp : checked(baseExp + baseExp * percent / 10000);
     }
@@ -108,6 +108,12 @@ public sealed partial class CharacterService
     /// a fraction of the Job EXP it asks. An award's own item 101 adds to it.
     /// </summary>
     public long JobExpFromBase(long baseExp)
+    {
+        if (Experience.JobFromBasePercent is { } percent) return ExperienceOptions.Scale(Math.Max(0, baseExp), percent);
+        return TableJobExpFromBase(baseExp);
+    }
+
+    private long TableJobExpFromBase(long baseExp)
     {
         if (baseExp <= 0 || !data.Table("PublicParamConfig").TryGetValue("BaseToJobConversionPercent", out var value)) return 0;
         return checked(baseExp * (long)(GameData.Number(value) ?? 0) / 10000);

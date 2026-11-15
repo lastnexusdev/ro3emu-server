@@ -24,6 +24,8 @@ public sealed partial class PanelSite
     private IEnumerable<Route> ServerRoutes() =>
     [
         Get("/api/admin/server", Access.Admin, async _ => Reply.Ok(await _ops.ServerStateAsync())),
+        Get("/api/admin/server/config", Access.Admin, async _ => Reply.Ok(await _ops.ServerConfigurationAsync())),
+        Post("/api/admin/server/config", Access.Admin, SaveServerConfigurationAsync),
         Post("/api/admin/server/schedule", Access.Admin, ScheduleAsync),
         Post("/api/admin/server/cancel", Access.Admin, async call => await _ops.CancelScheduleAsync(call.Signed)
             ? Reply.Ok(new { cancelled = true }) : Reply.Error(StatusCodes.Status404NotFound, "Nothing is scheduled.")),
@@ -31,6 +33,19 @@ public sealed partial class PanelSite
         Post("/api/admin/backups", Access.Admin, async call => Reply.Ok(new { name = await _ops.BackupNowAsync(call.Signed) })),
         Get("/api/admin/backups/{}", Access.Admin, DownloadBackupAsync),
     ];
+
+    private async Task<Reply> SaveServerConfigurationAsync(Call call)
+    {
+        var form = await BodyAsync<PanelConfigUpdate>(call, 128 * 1024);
+        if (form?.Revision == null || form.Changes == null || form.Changes.Count is < 1 or > 300)
+            return Bad("Provide a configuration revision and 1 to 300 changed settings.");
+        try
+        {
+            var result = await _ops.SaveServerConfigurationAsync(call.Signed, form);
+            return result.Done ? Reply.Ok(result) : Reply.Error(StatusCodes.Status409Conflict, result.Message);
+        }
+        catch (ArgumentException e) { return Bad(e.Message); }
+    }
 
     private async Task<Reply> ScheduleAsync(Call call)
     {

@@ -197,6 +197,10 @@ game, loading or waiting for a reconnect, as the HTTP character deletion is. Eve
 
 ## Server control
 
+**Server configs** (Admins) edits server options, shows saved and active values, and applies supported EXP and gameplay
+settings live. Other settings are saved for a restart. See [Server configs](server-configs.md) for persistence, live
+settings and restart behavior.
+
 **Server control** (Admins):
 
 - **Restart or shut down** now or in up to a day. The players in the game are told on the GM marquee at once and again

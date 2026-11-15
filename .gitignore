@@ -30,3 +30,14 @@ tools/unluac-batch/*.class
 
 # Temporary solution of tools/AnalyzerBaseline
 /.analyzer-baseline.slnx
+
+# Local deployment state and private operator overrides
+/build/
+/server/
+server-config.json
+server-supervisor-state.json
+server-supervisor-crashes.json
+server-history/
+.env
+.env.*
+!.env.example

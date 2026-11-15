@@ -29,6 +29,7 @@ public static partial class ServerHost
         // One server per data dir (C/D 19): taken before anything opens the database, released when the app is disposed.
         builder.Services.AddSingleton(_ => RealmLock.Acquire(options.DataDir));
         builder.Services.AddSingleton(Options.Create(options));
+        builder.Services.AddSingleton<ServerConfiguration>();
         builder.Services.AddSingleton(clock ?? TimeProvider.System);
         // GM and Admin accounts need two-factor authentication on a public panel unless the operator says otherwise.
         options.Panel.RequireAdmin2FA ??= !options.LocalOnly();
@@ -432,11 +433,16 @@ public static partial class ServerHost
         // An empty GM list means everyone only on a server that only this machine reaches, and not on a host started
         // as Production on purpose (docs/guide/gm-access.md). Only an explicit environment counts: the host's own
         // default is also "Production", and tests and local play set none.
-        options.GmOpenWhenEmpty ??= !ExplicitProduction(configuration) && options.LocalOnly();
         // A relative data dir is relative to the repository root (the folder holding Ro3Emu.slnx), else to the binary.
-        if (!Path.IsPathRooted(options.DataDir)) options.DataDir = Path.GetFullPath(Path.Combine(RepositoryRoot(), options.DataDir));
+        options.DataDir = AbsoluteDataDir(options.DataDir);
+        options = ServerConfiguration.Load(options);
+        options.GmOpenWhenEmpty ??= !ExplicitProduction(configuration) && options.LocalOnly();
+        options.DataDir = AbsoluteDataDir(options.DataDir);
         return options;
     }
+
+    internal static string AbsoluteDataDir(string path) =>
+        Path.GetFullPath(Path.IsPathRooted(path) ? path : Path.Combine(RepositoryRoot(), path));
 
     /// <summary>The panel's listen URL: its own bind address, else the server's; a port the server already uses is refused.</summary>
     private static string PanelUrl(ServerOptions options)
