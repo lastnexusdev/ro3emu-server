@@ -27,7 +27,7 @@ public sealed class RewardService
     private Random _random = new();
     private Dictionary<int, long>? _expCorrection;
     private readonly DropAttenuation _attenuation;
-    private readonly FieldExpRule[] _configuredFieldExp; // Ro3Emu:FieldExpRates (inferred), empty unless an operator set it
+    private FieldExpRule[] _configuredFieldExp; // Ro3Emu:FieldExpRates (inferred), empty unless an operator set it
     private volatile FieldExpRule[] _fieldExp; // the rules in force: the configured ones until a GM changes them
 
     /// <summary>Field AFK selects the enhanced _iDrop table only for qualified ordinary field kills.
@@ -161,9 +161,12 @@ public sealed class RewardService
         if (baseExp > 0)
         {
             long gap = player.Progress!.Level - monster.Template.Level;
-            baseExp = baseExp * Correction((int)Math.Clamp(gap, -200, 200)) / 10000;
-            baseExp = Math.Max(1, baseExp * _teams.ExpBonus(player) / 10000);
+            if (_character.Experience.LevelGapCorrectionEnabled)
+                baseExp = baseExp * Correction((int)Math.Clamp(gap, -200, 200)) / 10000;
+            if (_character.Experience.PartyBonusEnabled)
+                baseExp = Math.Max(1, baseExp * _teams.ExpBonus(player) / 10000);
             baseExp = ScaleFieldExp(monster.Template.NpcId, player.Progress!.Level, baseExp);
+            baseExp = ExperienceOptions.Scale(baseExp, _character.Experience.MonsterPercent);
         }
         // BaseExpAddConfig catch-up below the server level (CharacterService.LevelRules).
         baseExp = _character.WithPursueBonus(player.Progress!.Level, baseExp);
@@ -185,6 +188,9 @@ public sealed class RewardService
 
     /// <summary>"!fieldexp": replaces the rules in force, in memory until the next start (the configuration is not written).</summary>
     public void SetFieldExpRules(IEnumerable<FieldExpRule> rules) => _fieldExp = FieldExpRates.Valid(rules);
+
+    internal void SetConfiguredFieldExpRules(IEnumerable<FieldExpRule> rules) =>
+        _fieldExp = _configuredFieldExp = FieldExpRates.Valid(rules);
 
     /// <summary>"!fieldexp reset": the rules of Ro3Emu:FieldExpRates again.</summary>
     public void ResetFieldExpRules() => _fieldExp = _configuredFieldExp;

@@ -240,7 +240,7 @@ function authControls(menu) {
 
 /** The server's branding (Ro3Emu:Panel:Branding): name, logo, footer and accent colour, each only when set. */
 function drawBrand(server) {
-  const name = server?.name || 'RO3Emu';
+  const name = server?.name || 'Unspoken Ro';
   document.getElementById('brand-name').textContent = name;
   document.getElementById('foot-name').textContent = name;
   const logo = document.getElementById('brand-logo');
@@ -352,7 +352,7 @@ async function route() {
     }
     render(error.status === 404 ? notFound(error.message) : failure(error));
   }
-  document.title = (state.session?.server?.name || 'RO3Emu') + (section && section !== 'home' ? ' · ' + titles[section] : '');
+  document.title = (state.session?.server?.name || 'Unspoken Ro') + (section && section !== 'home' ? ' · ' + titles[section] : '');
 }
 
 function navigate(to, replace) {

@@ -112,7 +112,8 @@ public sealed partial class CharacterService
             for (int level = 1; JobLvConfig.Get(data, rank * 100L + level) is { } row && level < row.MaxJobLv; level++)
                 earned += row.JobeExp;
         for (int level = 1; level < p.JobLevel; level++) earned += JobExpNeed(p.Career, level);
-        return Math.Max(0, JobExpFromBase(baseExp) - earned);
+        // This repairs historical rewards at their original ratio; an operator's new rate is only for future rewards.
+        return Math.Max(0, TableJobExpFromBase(baseExp) - earned);
     }
 
     /// <summary>The Job EXP the current rank can still take, as ApplyExp would hold it.</summary>

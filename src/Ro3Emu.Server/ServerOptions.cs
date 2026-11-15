@@ -264,6 +264,11 @@ public sealed class ServerOptions
     /// </summary>
     public List<FieldExpRule> FieldExpRates { get; set; } = [];
 
+    /// <summary>Operator EXP tuning (inferred). Defaults preserve the exported tables and existing catch-up rules.</summary>
+    public ExperienceOptions Experience { get; set; } = new();
+
+    internal string PanelConfigurationPath { get; set; } = "";
+
     /// <summary>
     /// (inferred) Star Cores drop for roles with the Astral Level open (ParagonService.StarCoreDrops). The client data gives
     /// them no source; false turns the reconstructed drop off.

@@ -135,8 +135,14 @@ public sealed partial class PanelOperations
 
     public void Dispose()
     {
-        lock (_scheduleGate) _scheduleCancel?.Cancel();
-        _scheduleCancel?.Dispose();
+        lock (_scheduleGate)
+        {
+            // DI tracks both the concrete service and its interface alias. Detach first so disposal is idempotent.
+            var cancellation = _scheduleCancel;
+            _scheduleCancel = null;
+            cancellation?.Cancel();
+            cancellation?.Dispose();
+        }
     }
 
     public async Task<bool> CancelScheduleAsync(string admin)

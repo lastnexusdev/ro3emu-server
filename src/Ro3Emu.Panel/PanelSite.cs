@@ -344,16 +344,16 @@ public sealed partial class PanelSite
         });
 
     /// <summary>The request's JSON body, or null when it is missing, too large or not the expected shape.</summary>
-    private static async Task<T?> BodyAsync<T>(Call call) where T : class
+    private static async Task<T?> BodyAsync<T>(Call call, int maxBody = MaxBody) where T : class
     {
         var request = call.Context.Request;
-        if (request.ContentLength > MaxBody) return null;
+        if (request.ContentLength > maxBody) return null;
         using var buffer = new MemoryStream();
         byte[] chunk = new byte[4096];
         int read;
         while ((read = await request.Body.ReadAsync(chunk, call.Context.RequestAborted)) > 0)
         {
-            if (buffer.Length + read > MaxBody) return null;
+            if (buffer.Length + read > maxBody) return null;
             buffer.Write(chunk, 0, read);
         }
         try { return JsonSerializer.Deserialize<T>(buffer.GetBuffer().AsSpan(0, (int)buffer.Length), Json); }

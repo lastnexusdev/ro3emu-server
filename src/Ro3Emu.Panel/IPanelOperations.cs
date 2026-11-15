@@ -7,6 +7,10 @@ namespace Ro3Emu.Panel;
 /// </summary>
 public interface IPanelOperations
 {
+    Task<PanelServerConfiguration> ServerConfigurationAsync() => throw new NotSupportedException();
+
+    Task<PanelConfigResult> SaveServerConfigurationAsync(string admin, PanelConfigUpdate update) => throw new NotSupportedException();
+
     // ---------------------------------------------------------------- staff roles
 
     /// <summary>The account's staff role: Ro3Emu:Panel:Roles, Ro3Emu:GmAccounts (Admin) or one an Admin gave on the panel.</summary>
