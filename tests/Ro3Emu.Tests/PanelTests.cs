@@ -60,6 +60,12 @@ public sealed class PanelTests : IAsyncLifetime
             Assert.Equal(HttpStatusCode.OK, (await browser.Http.GetAsync(page)).StatusCode);
         Assert.Equal(HttpStatusCode.NotFound, (await browser.Http.GetAsync("/no-such-page")).StatusCode);
         Assert.Equal("text/css", (await browser.Http.GetAsync("/app.css")).Content.Headers.ContentType?.MediaType);
+        Assert.Equal("text/css", (await browser.Http.GetAsync("/portal-theme.css")).Content.Headers.ContentType?.MediaType);
+        using var artwork = await browser.Http.GetAsync("/images/site/hero-wide.webp");
+        Assert.Equal(HttpStatusCode.OK, artwork.StatusCode);
+        Assert.Equal("image/webp", artwork.Content.Headers.ContentType?.MediaType);
+        Assert.Equal("image/png", (await browser.Http.GetAsync("/images/site/rail-center.png")).Content.Headers.ContentType?.MediaType);
+        Assert.Equal("font/ttf", (await browser.Http.GetAsync("/fonts/site/cinzel-700.ttf")).Content.Headers.ContentType?.MediaType);
         Assert.Equal("font/woff2", (await browser.Http.GetAsync("/fonts/young-serif-400-latin.woff2")).Content.Headers.ContentType?.MediaType);
 
         var status = await browser.GetJsonAsync("/api/status");

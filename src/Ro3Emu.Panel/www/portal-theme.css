@@ -1,0 +1,158 @@
+/* Unspoken Ro: the website's own artwork, typography, iron frames, and ember palette.
+   Shared tokens also theme the account, database, and administration screens. */
+@font-face{font-family:Cinzel;font-style:normal;font-weight:700;font-display:swap;src:url('/fonts/site/cinzel-700.ttf') format('truetype')}
+@font-face{font-family:'Crimson Pro';font-style:normal;font-weight:600;font-display:swap;src:url('/fonts/site/crimson-pro-600.ttf') format('truetype')}
+@font-face{font-family:'Crimson Pro';font-style:normal;font-weight:700;font-display:swap;src:url('/fonts/site/crimson-pro-700.ttf') format('truetype')}
+@font-face{font-family:Figtree;font-style:normal;font-weight:400;font-display:swap;src:url('/fonts/site/figtree-400.ttf') format('truetype')}
+@font-face{font-family:Figtree;font-style:normal;font-weight:500;font-display:swap;src:url('/fonts/site/figtree-500.ttf') format('truetype')}
+@font-face{font-family:Figtree;font-style:normal;font-weight:600;font-display:swap;src:url('/fonts/site/figtree-600.ttf') format('truetype')}
+:root{
+  --ink:#30222d; --ink-2:#4b3645; --muted:#6c5869; --faint:#816c7c;
+  --blue:#a4471d; --blue-ink:#963d18; --amber:#f29a5f; --amber-ink:#873b14;
+  --green-ink:#23633b; --green-bg:#e5efdf; --red-ink:#aa2f3e; --red-bg:#fbe7e8;
+  --blue-bg:#f5e2d4; --grey-bg:#e9dfdf; --amber-bg:#f8e7d3;
+  /* Item quality colours describe game rarity, independently of the portal accent. */
+  --q3:#2457c2; --q3-bg:#e7eefc;
+  --surface:#fffaf5; --surface-sub:#f1e7df; --hover:#eee0d7;
+  --line:#d9c7bc; --line-soft:#e7d8cf; --line-strong:#b89a88;
+  --shadow-1:0 2px 4px #39202c08; --shadow-2:0 12px 32px #39202c18;
+  --ring:0 0 0 3px #b85c3533;
+  --on-ink:#fffaf5; --on-amber:#2b160f; --danger:#aa2f3e; --danger-hover:#8d2533; --amber-hover:#ffaf76;
+  --tint:#6c36220b; --tint-2:#a4471d16; --line-hover:#96694f;
+  --amber-line:#b982475c; --red-line:#b4283f4d; --blue-line:#ae542c55;
+  --glass:#fffaf5f2; --foot-bg:#ede2d9; --rank-2:#ded5db; --rank-3:#e8cdb9;
+  --qr-dark:#16121a; --qr-light:#fff;
+  --page-bg:#f5eee7; --sky-glow:#debea333;
+  --sky:linear-gradient(160deg,#f9f2ea,#f0e6e1);
+  --display:Cinzel,"Trajan Pro",Georgia,serif;
+  --serif:'Crimson Pro',Georgia,'Times New Roman',serif;
+  --body:Figtree,"Segoe UI",system-ui,sans-serif;
+  --page:1312px; --pad:32px; --bar:76px; --row:44px;
+  --r1:2px; --r2:0px; --r3:0px;
+  color-scheme:light;
+}
+:root[data-theme="dark"]{
+  --ink:#ede5df; --ink-2:#d4cbd1; --muted:#aaa1ab; --faint:#9b909d;
+  --blue:#f08a45; --blue-ink:#ffb26b; --amber:#f08a45; --amber-ink:#ffb26b;
+  --green-ink:#a2d695; --green-bg:#86b86b1c; --red-ink:#ff99a1; --red-bg:#e646641f;
+  --blue-bg:#ee8b431c; --grey-bg:#e8d7e211; --amber-bg:#ff943e1a;
+  --q3:#94b6ff; --q3-bg:#6491ff26;
+  --surface:#18141d; --surface-sub:#211b27; --hover:#2a222d;
+  --line:#4a3d46; --line-soft:#2e2531; --line-strong:#5a4b55;
+  --shadow-1:0 2px 4px #0002; --shadow-2:0 16px 40px #0005;
+  --ring:0 0 0 3px #f29a5f38;
+  --on-ink:#181017; --danger:#aa354a; --danger-hover:#c5435a;
+  --tint:#e8d7e20b; --tint-2:#f29a5f16; --line-hover:#be815e;
+  --amber-line:#ff943e55; --red-line:#ff99a14d; --blue-line:#f29a5f55;
+  --glass:#0d0b10f2; --foot-bg:#0d0b10; --rank-2:#423742; --rank-3:#573e2f;
+  --page-bg:#0d0b10; --sky-glow:transparent;
+  --sky:linear-gradient(180deg,#0d0b10,#120f17);
+  color-scheme:dark;
+}
+.view{padding-top:32px}
+.brand{font-weight:700;letter-spacing:-.6px}
+.brand svg{color:var(--amber);font-size:25px;filter:drop-shadow(0 0 8px #f29a5f26)}
+.top .brand{flex:none;width:200px}
+.top .brand-logo{max-width:200px;width:200px;height:auto;filter:drop-shadow(0 2px 4px #000c)}
+.brand-lockup{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+.top{border-bottom-color:#2f2630;box-shadow:none}
+.top::after{content:"";position:absolute;inset:auto 0 -3px;height:3px;pointer-events:none;opacity:.55;
+  background:linear-gradient(90deg,transparent,#7b3b25 20%,#f08a4580 50%,#7b3b25 80%,transparent)}
+.link[aria-current="page"]{color:var(--blue-ink);background:transparent;box-shadow:inset 0 -1px var(--blue)}
+.link[aria-current="page"] svg{color:var(--blue-ink)}
+.top .link{height:36px}
+.card{position:relative;background:linear-gradient(180deg,var(--surface-sub),var(--surface));
+  box-shadow:inset 0 0 0 1px #0a080c,inset 0 0 0 3px #2a222b66,0 12px 30px #0002}
+.card-head{min-height:54px;border-top:0}
+.card-head h2{font:700 24px/1.3 var(--serif)}
+.title{font-weight:700}
+.label{letter-spacing:.12em}
+.kpi{padding:22px 24px;border-top:2px solid var(--line-strong)}
+.kpi .label svg{color:var(--blue-ink)}
+.kpi .value{margin-top:14px}
+.kpi .value b{font:700 32px/1.2 var(--serif);color:var(--ink)}
+.kpi .detail{margin-top:8px}
+.kpi.warn .value b{color:var(--red-ink)}
+.btn{font-family:var(--serif);font-size:17px;letter-spacing:.02em}
+.btn.sm{font-size:15px}
+.btn.primary,.btn.accent{color:#fff1dc;border-color:#f39a55;background:linear-gradient(180deg,#d4652c,#a43b1c 52%,#5e1c12);
+  text-shadow:0 1px 2px #3a0f08;box-shadow:inset 0 0 0 1px #ffb0703a,inset 0 0 18px #ff8a3a55,0 0 0 2px #0d0b10,0 0 0 3px #6b3a2a,0 0 20px #e8572a26}
+.btn.primary:not(:disabled):hover,.btn.accent:not(:disabled):hover{background:linear-gradient(180deg,#e57838,#b34923 52%,#702216);border-color:#ffb26b}
+.btn.secondary{box-shadow:inset 0 1px #ffffff12,0 0 0 2px var(--page-bg),0 0 0 3px var(--line)}
+.input{background:var(--surface-sub)}
+.portal-footer-links{display:flex;align-items:center;flex-wrap:wrap;gap:12px 24px}
+.portal-footer-links a:hover{color:var(--blue-ink)}
+.portal-footer-links #foot-text{font-size:12px}
+
+/* The site's edge-to-edge castle, with content aligned to the portal's inner grid. */
+.view:has(> .portal-hero){padding-top:0}
+.portal-hero{position:relative;isolation:isolate;min-height:570px;width:100vw;margin-left:calc(50% - 50vw);
+  display:flex;align-items:flex-start;padding:100px max(var(--pad),calc((100vw - var(--page)) / 2)) 100px;
+  background:#0b0910;color:#ede5df}
+.portal-hero::before{content:"";position:absolute;inset:0;z-index:-2;
+  background:url('/images/site/hero-wide.webp') 62% 40%/cover no-repeat}
+.portal-hero::after{content:"";position:absolute;inset:0;z-index:-1;
+  background:linear-gradient(90deg,#0b0910 0%,#0b0910d0 22%,#0b091060 44%,transparent 70%),
+    linear-gradient(0deg,#0b0910 0%,#0b0910a0 16%,transparent 50%),linear-gradient(180deg,#0b091099,transparent 25%)}
+.hero-copy{max-width:780px}
+.hero-eyebrow{display:flex;align-items:center;gap:12px;margin-bottom:22px;
+  font:600 11px/1.5 var(--body);letter-spacing:.24em;color:#f08a45}
+.hero-eyebrow::before{content:"";height:1px;width:22px;background:linear-gradient(90deg,transparent,#f08a45)}
+.portal-hero h1{font:700 clamp(46px,6.4vw,92px)/1.15 var(--display);letter-spacing:.005em;overflow-wrap:anywhere;
+  padding-right:.1em;filter:drop-shadow(0 4px 14px #000c)}
+.realm-title-metal{background:linear-gradient(180deg,#fbf3ec,#d9cdd3 55%,#9d8e98);background-clip:text;-webkit-background-clip:text;color:transparent}
+.realm-title-ro{position:relative;display:inline-block;isolation:isolate}
+.realm-title-ro::before,.realm-title-ro::after{content:"";position:absolute;left:50%;top:50%;width:1.55em;height:1.9em;
+  transform:translate(-44%,-50%);pointer-events:none;background:center/100% 100% no-repeat}
+.realm-title-ro::before{z-index:-1;background-image:url('/images/site/claw-scratches.webp');filter:brightness(1.35) saturate(1.15) drop-shadow(0 0 .08em #ff6a2a99)}
+.realm-title-ro::after{z-index:1;background-image:url('/images/site/claw-front.webp');filter:brightness(1.35) saturate(1.15) drop-shadow(0 0 .06em #ff6a2acc)}
+.hero-tagline{font:600 clamp(23px,2.1vw,32px)/1.3 var(--serif);color:#eee4dc;margin-top:16px}
+.hero-tagline em{color:#f08a45}
+.hero-description{max-width:510px;font-size:16px;line-height:1.8;color:#d4cbd1;margin-top:24px}
+.hero-actions{display:flex;flex-wrap:wrap;gap:20px;margin-top:30px}
+.hero-actions .btn{height:48px;padding:0 24px}
+.hero-actions .secondary{background:linear-gradient(180deg,#2a222ddd,#18141c);border-color:#6d5a64;color:#ede5df}
+.hero-actions .secondary:hover{background:#352637;border-color:#f29a5f}
+.hero-meta{display:flex;flex-wrap:wrap;gap:12px 24px;margin-top:28px;font-size:12px;color:#aaa1ab}
+.hero-meta>span{display:flex;align-items:center;gap:7px}
+.hero-meta svg{color:#f29a5f;font-size:14px}
+.hero-meta .chip{background:#18281fdd;color:#a2d695}
+.realm-stats{position:relative;z-index:2;gap:0;margin-top:-36px;margin-bottom:32px;padding:20px 8px;
+  border:1px solid #4a3d46;background:linear-gradient(180deg,#1c1720ee,#110e15f2);
+  box-shadow:inset 0 0 0 1px #0a080c,inset 0 0 0 3px #2a222b,0 18px 40px #0008}
+.realm-stats::before{content:"";position:absolute;left:-10px;right:-10px;top:-18px;height:34px;pointer-events:none;
+  background:url('/images/site/rail-left.png') left center/auto 100% no-repeat,
+    url('/images/site/rail-right.png') right center/auto 100% no-repeat,
+    url('/images/site/rail-center.png') center/auto 100% no-repeat,
+    url('/images/site/rail-bar.png') center/calc(100% - 102px) 100% no-repeat}
+.realm-stats .kpi{padding:6px 28px;border:0;border-right:1px solid #3b3039;background:none;box-shadow:none}
+.realm-stats .kpi:last-child{border-right:0}
+.realm-stats .label{color:#aaa1ab;font-size:10px;letter-spacing:.2em}
+.realm-stats .value{margin-top:8px}
+.realm-stats .value b{color:#f2e9e2;font-size:30px}
+.realm-stats .detail,.realm-stats .value small{color:#aaa1ab}
+:root[data-theme="light"] .realm-stats{--ink:#ede5df;--muted:#aaa1ab;--blue-ink:#ffb26b}
+.auth-card{border-top:2px solid var(--blue)}
+.auth-card .card-body{padding:32px}
+@media(max-width:1080px){
+  .realm-stats .kpi:nth-child(2){border-right:0}
+  .realm-stats .kpi:nth-child(-n+2){padding-bottom:20px;margin-bottom:16px;border-bottom:1px solid #3b3039}
+}
+@media(max-width:600px){
+  :root{--pad:16px}
+  .view{padding-top:20px}
+  .top .brand,.top .brand-logo{width:180px;max-width:180px}
+  .portal-hero{min-height:600px;padding:210px 24px 90px}
+  .portal-hero::before{background-size:auto 100%;background-position:68% top}
+  .portal-hero::after{background:linear-gradient(0deg,#0b0910 0%,#0b0910f2 28%,#0b091080 68%,#0b091033)}
+  .hero-eyebrow{gap:8px;margin-bottom:18px;font-size:9px;letter-spacing:1.6px}
+  .hero-eyebrow::before{width:14px}
+  .portal-hero h1{font-size:clamp(29px,9vw,54px);white-space:nowrap}
+  .hero-tagline{font-size:23px}
+  .hero-description{font-size:14px}
+  .hero-actions{gap:18px;flex-direction:column;align-items:stretch}
+  .hero-meta{gap:10px 20px}
+  .realm-stats .kpi{padding-left:16px;padding-right:16px}
+  .realm-stats .label{font-size:9px;letter-spacing:.12em}
+  .portal-footer-links{gap:12px 18px}
+}

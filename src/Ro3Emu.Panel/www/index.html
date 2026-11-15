@@ -4,11 +4,11 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="color-scheme" content="light dark">
-<meta name="theme-color" content="#dfe4fc">
+<meta name="theme-color" content="#0d0b10">
 <title>Unspoken Ro</title>
-<link rel="icon" href="/icon.svg" type="image/svg+xml">
-<link rel="preload" href="/fonts/young-serif-400-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="preload" href="/fonts/zen-maru-gothic-700-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="icon" href="/images/site/logo-transparent.webp" type="image/webp">
+<link rel="preload" href="/fonts/site/cinzel-700.ttf" as="font" type="font/ttf" crossorigin>
+<link rel="preload" href="/images/site/hero-wide.webp" as="image">
 <script src="/theme.js"></script>
 <link rel="stylesheet" href="/app.css">
 <link rel="stylesheet" href="/pages/admin-tools.css">
@@ -17,6 +17,7 @@
 <link rel="stylesheet" href="/pages/admin-staff.css">
 <link rel="stylesheet" href="/pages/admin-config.css">
 <link rel="stylesheet" href="/pages/players.css">
+<link rel="stylesheet" href="/portal-theme.css">
 <script src="/app.js" defer></script>
 <!-- Admin pages, each in its own file; they register with app.js before the first route. -->
 <script src="/pages/admin-tools.js" defer></script>
@@ -101,14 +102,9 @@
 
 <a class="skip" href="#view">Skip to content</a>
 
-<!-- the sky, over the whole page -->
-<div class="sky" aria-hidden="true">
-  <i class="cloud c1"></i><i class="cloud c2"></i><i class="cloud c3"></i><i class="cloud c4"></i>
-</div>
-
 <header class="top" id="top">
   <div class="wrap">
-    <a class="brand" href="/" data-link><svg class="i" id="brand-star"><use href="#i-star"/></svg><img class="brand-logo" id="brand-logo" alt="" hidden><span id="brand-name">Unspoken Ro</span></a>
+    <a class="brand" href="/" data-link><svg class="i" id="brand-star"><use href="#i-star"/></svg><img class="brand-logo" id="brand-logo" alt="" hidden><span class="brand-lockup"><span id="brand-name">Unspoken Ro</span><small>PLAYER PORTAL</small></span></a>
     <nav class="nav" id="nav" aria-label="Main">
       <div class="nav-links">
         <a class="link" href="/" data-link data-nav="home"><svg class="i"><use href="#i-home"/></svg>Home</a>
@@ -138,7 +134,7 @@
 <footer class="foot">
   <div class="wrap">
     <span class="brand"><svg class="i"><use href="#i-star"/></svg><span id="foot-name">Unspoken Ro</span></span>
-    <span id="foot-text">Unspoken Ro</span>
+    <span class="portal-footer-links"><a href="https://unspokenro.com/">Website</a><a href="https://unspokenro.com/news.php">Patch notes</a><span id="foot-text">A fan-run server, not affiliated with Gravity Co., Ltd.</span></span>
   </div>
 </footer>
 

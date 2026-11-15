@@ -1,10 +1,10 @@
-// Runs before the page paints: the theme chosen with the sun/moon button, or none to follow the system setting.
+// Runs before the page paints: match the website and patcher unless a visitor chose the light theme.
 function setTheme(theme) {
-  if (theme) document.documentElement.dataset.theme = theme;
+  theme = theme === 'light' ? 'light' : 'dark';
+  document.documentElement.dataset.theme = theme;
   try { if (theme) localStorage.setItem('theme', theme); } catch { /* private window: the choice lasts for this page */ }
-  const dark = document.documentElement.dataset.theme === 'dark'
-    || (!document.documentElement.dataset.theme && matchMedia('(prefers-color-scheme: dark)').matches);
+  const dark = theme === 'dark';
   const meta = document.querySelector('meta[name="theme-color"]');
-  if (meta) meta.content = dark ? '#141641' : '#dfe4fc';
+  if (meta) meta.content = dark ? '#0d0b10' : '#f5eee7';
 }
-try { setTheme(localStorage.getItem('theme')); } catch { /* no storage: follow the system */ }
+try { setTheme(localStorage.getItem('theme')); } catch { setTheme('dark'); }

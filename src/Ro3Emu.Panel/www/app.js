@@ -244,9 +244,10 @@ function drawBrand(server) {
   document.getElementById('brand-name').textContent = name;
   document.getElementById('foot-name').textContent = name;
   const logo = document.getElementById('brand-logo');
-  if (server?.logo && logo.getAttribute('src') !== server.logo) logo.src = server.logo;
-  logo.hidden = !server?.logo;
-  document.getElementById('brand-star').style.display = server?.logo ? 'none' : '';
+  const logoSource = server?.logo || '/images/site/logo-transparent.webp';
+  if (logo.getAttribute('src') !== logoSource) logo.src = logoSource;
+  logo.hidden = false;
+  document.getElementById('brand-star').style.display = 'none';
   if (server?.footer) document.getElementById('foot-text').textContent = server.footer;
   // CSSOM, not a style attribute: the page's policy allows no inline style.
   if (server?.accent) for (const token of ['--blue', '--blue-ink']) document.documentElement.style.setProperty(token, server.accent);
@@ -303,10 +304,9 @@ function fitNav() {
 new ResizeObserver(fitNav).observe(topBar);
 document.fonts?.ready.then(fitNav);
 
-// The sun/moon button: switches away from the theme on screen and remembers the choice (theme.js applies it on load).
+// The sun/moon button remembers the choice; a new visitor starts with the patcher's dark theme.
 document.getElementById('theme').addEventListener('click', () => {
-  const dark = document.documentElement.dataset.theme
-    ? document.documentElement.dataset.theme === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches;
+  const dark = document.documentElement.dataset.theme !== 'light';
   setTheme(dark ? 'light' : 'dark');
 });
 document.addEventListener('keydown', e => { if (e.key === 'Escape' && nav.classList.contains('open')) { setMenu(false); menuButton.focus(); } });
@@ -412,16 +412,37 @@ function boardTable(board, limit) {
 
 // ---------------------------------------------------------------- home
 
+function portalHero(status, session) {
+  const unspoken = /^unspoken\s*ro$/i.test(status.name || '');
+  return h('section', { class: 'portal-hero', 'aria-labelledby': 'realm-title' },
+    h('div', { class: 'hero-copy' },
+      h('div', { class: 'hero-eyebrow' }, h('span', null, 'RAGNAROK ONLINE · PLAYER PORTAL')),
+      h('h1', { id: 'realm-title' }, unspoken
+        ? [h('span', { class: 'realm-title-metal' }, 'Unspoken'),
+          h('span', { class: 'realm-title-ro' }, h('span', { class: 'realm-title-metal' }, 'RO'))]
+        : h('span', { class: 'realm-title-metal' }, status.name)),
+      h('p', { class: 'hero-tagline' }, unspoken
+        ? ['A kingdom forgotten. ', h('em', null, 'A legend unspoken.')]
+        : status.tagline || 'Your realm. Your companions. Your next adventure.'),
+      h('p', { class: 'hero-description' }, 'Your account, your characters, and the stories of the realm. Pick up where your legend stopped.'),
+      h('div', { class: 'hero-actions' },
+        session?.account
+          ? link('/account', { class: 'btn primary' }, icon('user'), 'My account', icon('arrow'))
+          : session?.registration
+            ? link('/register', { class: 'btn primary' }, 'Join the adventure', icon('arrow'))
+            : link('/login', { class: 'btn primary' }, 'Log in', icon('arrow')),
+        link('/rankings', { class: 'btn secondary' }, icon('trophy'), 'Explore rankings')),
+      h('div', { class: 'hero-meta' }, h('span', null, icon('map'), status.area),
+        h('span', null, chip('online', 'Server online')))));
+}
+
 async function homePage() {
   const [status, news, online, level] = await Promise.all([api('GET', '/api/status'), api('GET', '/api/news?limit=5'),
     api('GET', '/api/online'), api('GET', '/api/rankings/level')]);
   const s = state.session;
   const mine = s?.account ? await api('GET', '/api/account').catch(() => null) : null;
-  const head = pageHead({
-    title: status.name, big: true, after: chip('online', 'Online'), subtitle: status.tagline,
-    meta: [['Area', status.area], ['Version', mono(status.version || '-')], ['Started', stamp(status.startedUtc)]],
-  });
-  const kpis = h('section', { class: 'kpis', 'aria-label': 'Server figures' },
+  const head = portalHero(status, s);
+  const kpis = h('section', { class: 'kpis realm-stats', 'aria-label': 'Server figures' },
     kpi('Online now', 'users', num(status.players), status.players === 1 ? 'player' : 'players', 'characters in the world'),
     kpi('Uptime', 'clock', duration(status.uptimeSeconds), null, ['since ', stamp(status.startedUtc)]),
     kpi('Accounts', 'user', num(status.accounts), null, 'registered on this realm'),
